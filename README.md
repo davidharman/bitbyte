@@ -15,12 +15,12 @@ Example:
   $> bitbyte 1024 MB
   Input  value 1024 MegaBytes
   
-  Bytes:1073741824
-  KiloBytes:1048576
-  MegaBytes:1024
-  Gigabytes:1
-  TeraBytes:0
-  PetaBytes:0
+  Bytes:1073741824  
+  KiloBytes:1048576  
+  MegaBytes:1024  
+  Gigabytes:1  
+  TeraBytes:0  
+  PetaBytes:0  
   
   $> bitbyte 1125899906842624 KB
   Input  value 1125899906842624 KiloBytes
