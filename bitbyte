@@ -5,7 +5,8 @@ retval=""
 #BitBite
 #Calculator to show the common values bytes/KB/MB/GB/TB of a value (e.g. 1 MB or 800 KB)
 #To make it easier, will require two paramters value and data size (e.g. MB KB)
-b_ase=1024
+k_ibi=1024
+k_ilo=1000
 
 call_bc() {
  n1=$1
@@ -15,17 +16,31 @@ call_bc() {
 
 call_convert() {
 # Function to convert data sizes
+# 2 inputs, 1 is value, 2 is data size
 case $2 in
-  B-KB) retval=$1/$b_ase;;
-  B-MB) retval=$1/$b_ase/$b_ase;;
-  B-GB) retval=$1/$b_ase/$b_ase/$b_ase;;
-  B-TB) retval=$1/$b_ase/$b_ase/$b_ase/$b_ase;;
-  B-PB) retval=$1/$b_ase/$b_ase/$b_ase/$b_ase/$b_ase;;
-  KB-B) retval=$1*1024;;
-  MB-B) retval=$1*1024*1024;;
-  GB-B) retval=$1*1024*1024*1024;;
-  TB-B) retval=$1*1024*1024*1024*1024;;
-  PB-B) retval=$1*1024*1024*1024*1024*1024;;
+  "B-b")  retval=$1*8;;
+  "B-KiB") retval=$1/$k_ibi;;
+  "B-KB") retval=$1/$k_ilo;;
+  "B-Kb") retval=$1/$k_ilo*8;;
+  "B-MiB") retval=$1/$k_ibi/$k_ibi;;
+  "B-MB") retval=$1/$k_ilo/$k_ilo;;
+  "B-Mb") retval=$1/$k_ilo/$k_ilo*8;;
+  "B-GiB") retval=$1/$k_ibi/$k_ibi/$k_ibi;;
+  "B-GB") retval=$1/$k_ilo/$k_ilo/$k_ilo;;
+  "B-Gb") retval=$1/$k_ilo/$k_ilo/$k_ilo*8;;
+  "B-Tb") retval=$1/$k_ilo/$k_ilo/$k_ilo/$k_ilo*8;;
+  "B-TB") retval=$1/$k_ilo/$k_ilo/$k_ilo/$k_ilo;;
+  "b-B") retval=$1/8;;
+  "KiB-B") retval=$1*$k_ibi;;
+  "KB-B") retval=$1*$k_ilo;;
+  "Kb-B") retval=$1*$k_ilo/8;;
+  "MiB-B") retval=$1*$k_ibi*$k_ibi;;
+  "MB-B") retval=$1*$k_ilo*$k_ilo;;
+  "GiB-B") retval=$1*$k_ibi*$k_ibi*$k_ibi;;
+  "GB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo;;
+  "GB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo/8;;
+  "Tb-B") retval=$1*$k_ilo*$k_ilo*$k_ilo*$k_ilo/8;;
+  "TB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo*$k_ilo;;
 esac
 }
 
@@ -33,7 +48,7 @@ esac
 if [[ "x$1" = "x" || "x$2" = "x" ]]
 then
  echo "You need to specify a number a space and a size, e.g. 1 MB or 8 TB"
- echo "You can use, B, KB, MB, GB, TB, PB"
+ echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB"
  exit
 fi
 
@@ -42,43 +57,83 @@ ds=$2
 pn=""
 
 case $ds in
+  b) l_abel='Bits';
+     call_convert $nm 'b-B';;
   B) l_abel='Bytes';
      let b_ytes=$nm;;
+  Kib) l_abel='KibiBits';
+      call_convert $nm 'Kib-B';;
+  Kb) l_abel='KiloBits';
+      call_convert $nm 'Kb-B';;
+  KiB) l_abel='KibiBytes';
+      call_convert $nm 'KiB-B';;
   KB) l_abel='KiloBytes';
-        call_convert $nm 'KB-B';
-        let b_ytes=$retval;;
+      call_convert $nm 'KB-B';;
+  Mb) l_abel='MegaBits';
+      call_convert $nm 'Mb-B';;
+  MiB) l_abel='Mebibytes';
+      call_convert $nm 'MiB-B';;
   MB) l_abel='MegaBytes';
-        call_convert $nm 'MB-B';
-        let b_ytes=$retval;;
+      call_convert $nm 'MB-B';;
+  Gb) l_abel='GigaBits';
+      call_convert $nm 'Gb-B';;
+  GiB) l_abel='GibiBytes';
+      call_convert $nm 'GiB-B';;
   GB) l_abel='GigaBytes';
-        call_convert $nm 'GB-B';
-        let b_ytes=$retval;;
+      call_convert $nm 'GB-B';;
+  Tb) l_abel='TeraBits';
+      call_convert $nm 'Tb-B';;
   TB) l_abel='TeraBytes';
-        call_convert $nm 'TB-B';
-        let b_ytes=$retval;;
-  PB) l_abel='PetaBytes';
-        call_convert $nm 'PB-B';
-        let b_ytes=$retval;;
-  *) echo Incorrect values $nm $ds;
+      call_convert $nm 'TB-B';;
+  *) echo Incorrect values:Supported values are b,B,Kb,KB,Kib,Mb,MB,MiB,Gb,GB,GiB,Tb,TB ;
      exit;;
 esac
 
+if [ $ds != "B" ]; then
+    let b_ytes=$retval  
+fi
+
+call_convert $b_ytes 'B-b'
+let b_its=$retval
+
+call_convert $b_ytes 'B-Kb'
+let kilob_its=$retval
 call_convert $b_ytes 'B-KB'
-let k_ilo=$retval
+let kilob_ytes=$retval
+call_convert $b_ytes 'B-KiB'
+let kibib_ytes=$retval
+
+call_convert $b_ytes 'B-Mb'
+let megab_its=$retval
 call_convert $b_ytes 'B-MB'
-let m_ega=$retval
+let megab_ytes=$retval
+call_convert $b_ytes 'B-MiB'
+let mibib_ytes=$retval
+
+call_convert $b_ytes 'B-Mb'
+let gigab_its=$retval
 call_convert $b_ytes 'B-GB'
-let g_iga=$retval
+let gigab_ytes=$retval
+call_convert $b_ytes 'B-GiB'
+let gibib_ytes=$retval
+
+call_convert $b_ytes 'B-Tb'
+let terab_its=$retval
 call_convert $b_ytes 'B-TB'
-let t_era=$retval
-call_convert $b_ytes 'B-PB'
-let p_eta=$retval
+let terab_ytes=$retval
 
 echo  "Input  value $nm $l_abel"
 echo  "" 
-echo "Bytes:"$b_ytes
-echo "KiloBytes:"$k_ilo
-echo "MegaBytes:"$m_ega
-echo "Gigabytes:"$g_iga
-echo "TeraBytes:"$t_era
-echo "PetaBytes:"$p_eta
+echo "Bits:     "$b_its
+echo "Bytes:    "$b_ytes
+echo "KiloBits: "$kilob_its
+echo "KiloBytes:"$kilob_ytes
+echo "KibiBytes:"$kibib_ytes
+echo "MegaBits: "$megab_its
+echo "MegaBytes:"$megab_ytes
+echo "MebiBytes:"$mibib_ytes
+echo "GigaBits: "$gigab_its
+echo "GigaBytes:"$gigab_ytes
+echo "GibiBytes:"$gibib_ytes
+echo "TeraBits: "$terab_its
+echo "TeraBytes:"$terab_ytes
