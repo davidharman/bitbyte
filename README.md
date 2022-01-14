@@ -10,11 +10,11 @@ To install: place script in bin folder and chmod +x to make it executable
 To run enter a value and datasize separated by a space  
 
 <i>bitbyte value datasize </i>
-
-
-Example:
-  $> bitbyte 1024 MB
-  Input  value 1024 MegaBytes
+  
+  
+Example:  
+  $> bitbyte 1024 MB  
+  Input  value 1024 MegaBytes  
   
   Bytes:1073741824  
   KiloBytes:1048576  
