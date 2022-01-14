@@ -9,7 +9,7 @@ To install: place script in bin folder and chmod +x to make it executable
 
 To run enter a value and datasize separated by a space  
 
-<i>bitbyte <value> <datasize></i>
+<i>bitbyte value datasize </i>
 
 
 Example:
