@@ -1,0 +1,84 @@
+#!/bin/zsh
+
+retval=""
+
+#BitBite
+#Calculator to show the common values bytes/KB/MB/GB/TB of a value (e.g. 1 MB or 800 KB)
+#To make it easier, will require two paramters value and data size (e.g. MB KB)
+b_ase=1024
+
+call_bc() {
+ n1=$1
+ n2=$2
+ echo "scale=4; $n1/($n2)" |bc
+}
+
+call_convert() {
+# Function to convert data sizes
+case $2 in
+  B-KB) retval=$1/$b_ase;;
+  B-MB) retval=$1/$b_ase/$b_ase;;
+  B-GB) retval=$1/$b_ase/$b_ase/$b_ase;;
+  B-TB) retval=$1/$b_ase/$b_ase/$b_ase/$b_ase;;
+  B-PB) retval=$1/$b_ase/$b_ase/$b_ase/$b_ase/$b_ase;;
+  KB-B) retval=$1*1024;;
+  MB-B) retval=$1*1024*1024;;
+  GB-B) retval=$1*1024*1024*1024;;
+  TB-B) retval=$1*1024*1024*1024*1024;;
+  PB-B) retval=$1*1024*1024*1024*1024*1024;;
+esac
+}
+
+# Check if 2 parameters exist
+if [[ "x$1" = "x" || "x$2" = "x" ]]
+then
+ echo "You need to specify a number a space and a size, e.g. 1 MB or 8 TB"
+ echo "You can use, B, KB, MB, GB, TB, PB"
+ exit
+fi
+
+nm=$1
+ds=$2
+pn=""
+
+case $ds in
+  B) l_abel='Bytes';
+     let b_ytes=$nm;;
+  KB) l_abel='KiloBytes';
+        call_convert $nm 'KB-B';
+        let b_ytes=$retval;;
+  MB) l_abel='MegaBytes';
+        call_convert $nm 'MB-B';
+        let b_ytes=$retval;;
+  GB) l_abel='GigaBytes';
+        call_convert $nm 'GB-B';
+        let b_ytes=$retval;;
+  TB) l_abel='TeraBytes';
+        call_convert $nm 'TB-B';
+        let b_ytes=$retval;;
+  PB) l_abel='PetaBytes';
+        call_convert $nm 'PB-B';
+        let b_ytes=$retval;;
+  *) echo Incorrect values $nm $ds;
+     exit;;
+esac
+
+call_convert $b_ytes 'B-KB'
+let k_ilo=$retval
+call_convert $b_ytes 'B-MB'
+let m_ega=$retval
+call_convert $b_ytes 'B-GB'
+let g_iga=$retval
+call_convert $b_ytes 'B-TB'
+let t_era=$retval
+call_convert $b_ytes 'B-PB'
+let p_eta=$retval
+
+echo  "Input  value $nm $l_abel"
+echo  "" 
+echo "Bytes:"$b_ytes
+echo "KiloBytes:"$k_ilo
+echo "MegaBytes:"$m_ega
+echo "Gigabytes:"$g_iga
+echo "TeraBytes:"$t_era
+echo "PetaBytes:"$p_eta
