@@ -22,13 +22,13 @@ Example:
   TeraBytes:0  
   PetaBytes:0  
   
-  $> bitbyte 1125899906842624 KB
-  Input  value 1125899906842624 KiloBytes
+  $> bitbyte 1125899906842624 KB  
+  Input  value 1125899906842624 KiloBytes  
   
-  Bytes:1152921504606846976
-  KiloBytes:1125899906842624
-  MegaBytes:1099511627776
-  Gigabytes:1073741824
-  TeraBytes:1048576
-  PetaBytes:1024
+  Bytes:1152921504606846976  
+  KiloBytes:1125899906842624  
+  MegaBytes:1099511627776  
+  Gigabytes:1073741824  
+  TeraBytes:1048576  
+  PetaBytes:1024  
  
