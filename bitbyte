@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 retval=""
+retval2=""
 
 #BitBite
 #Calculator to show the common values bytes/KB/MB/GB/TB of a value (e.g. 1 MB or 800 KB)
@@ -8,15 +9,19 @@ retval=""
 k_ibi=1024
 k_ilo=1000
 
-call_bc() {
- n1=$1
- n2=$2
- echo "scale=4; $n1/($n2)" |bc
+call_clean() {
+  retval=0
+  retval2=0
+  call_convert $1 $2
+#  echo 'The Sum is' $retval
+#  let retval2=$retval
+  let retval2=$(bc<<<"scale=2;"$retval)
 }
 
 call_convert() {
 # Function to convert data sizes
 # 2 inputs, 1 is value, 2 is data size
+retval=0
 case $2 in
   "B-b")  retval=$1*8;;
   "B-KiB") retval=$1/$k_ibi;;
@@ -36,14 +41,16 @@ case $2 in
   "Kb-B") retval=$1*$k_ilo/8;;
   "MiB-B") retval=$1*$k_ibi*$k_ibi;;
   "MB-B") retval=$1*$k_ilo*$k_ilo;;
+  "Mb-B") retval=$1*$k_ilo*$k_ilo/8;;
   "GiB-B") retval=$1*$k_ibi*$k_ibi*$k_ibi;;
   "GB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo;;
-  "GB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo/8;;
+  "Gb-B") retval=$1*$k_ilo*$k_ilo*$k_ilo/8;;
   "Tb-B") retval=$1*$k_ilo*$k_ilo*$k_ilo*$k_ilo/8;;
   "TB-B") retval=$1*$k_ilo*$k_ilo*$k_ilo*$k_ilo;;
 esac
 }
 
+# Init
 # Check if 2 parameters exist
 if [[ "x$1" = "x" || "x$2" = "x" ]]
 then
@@ -85,42 +92,44 @@ case $ds in
       call_convert $nm 'Tb-B';;
   TB) l_abel='TeraBytes';
       call_convert $nm 'TB-B';;
-  *) echo Incorrect values:Supported values are b,B,Kb,KB,Kib,Mb,MB,MiB,Gb,GB,GiB,Tb,TB ;
+  *) echo Incorrect values:Supported values are b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB ;
      exit;;
 esac
 
-if [ $ds != "B" ]; then
-    let b_ytes=$retval  
+if [ $ds != B ]; then
+#    echo Sum is  $retval
+    let b_ytes=$(bc<<<$retval)
+#    echo Bytes are $b_ytes
 fi
 
-call_convert $b_ytes 'B-b'
-let b_its=$retval
+call_clean $b_ytes "B-b" 
+b_its=$retval2
 
-call_convert $b_ytes 'B-Kb'
-let kilob_its=$retval
-call_convert $b_ytes 'B-KB'
-let kilob_ytes=$retval
-call_convert $b_ytes 'B-KiB'
-let kibib_ytes=$retval
+call_clean $b_ytes 'B-Kb'
+kilob_its=$retval2
+call_clean $b_ytes 'B-KB'
+kilob_ytes=$retval2
+call_clean $b_ytes 'B-KiB'
+kibib_ytes=$retval2
 
-call_convert $b_ytes 'B-Mb'
-let megab_its=$retval
-call_convert $b_ytes 'B-MB'
-let megab_ytes=$retval
-call_convert $b_ytes 'B-MiB'
-let mibib_ytes=$retval
+call_clean $b_ytes 'B-Mb'
+megab_its=$retval2
+call_clean $b_ytes 'B-MB'
+megab_ytes=$retval2
+call_clean $b_ytes 'B-MiB'
+mibib_ytes=$retval2
 
-call_convert $b_ytes 'B-Mb'
-let gigab_its=$retval
-call_convert $b_ytes 'B-GB'
-let gigab_ytes=$retval
-call_convert $b_ytes 'B-GiB'
-let gibib_ytes=$retval
+call_clean $b_ytes 'B-Gb'
+gigab_its=$retval2
+call_clean $b_ytes 'B-GB'
+gigab_ytes=$retval2
+call_clean $b_ytes 'B-GiB'
+gibib_ytes=$retval2
 
-call_convert $b_ytes 'B-Tb'
-let terab_its=$retval
-call_convert $b_ytes 'B-TB'
-let terab_ytes=$retval
+call_clean $b_ytes 'B-Tb'
+terab_its=$retval2
+call_clean $b_ytes 'B-TB'
+terab_ytes=$retval2
 
 echo  "Input  value $nm $l_abel"
 echo  "" 
