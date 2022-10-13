@@ -4,8 +4,8 @@ retval=""
 retval2=""
 
 #BitBite
-#Calculator to show the common values bytes/KB/MB/GB/TB of a value (e.g. 1 MB or 800 KB)
-#To make it easier, will require two paramters value and data size (e.g. MB KB)
+#Calculator to show the common values bytes/KB/MB/GB/TB of a value (e.g. 1 MB or 800 KB, or 1MB or 800KB)
+#You can specify one parameter value and size (e.g. 1MB) or two paramters value and data size (e.g. 8 MB)
 k_ibi=1024
 k_ilo=1000
 
@@ -52,11 +52,27 @@ esac
 
 # Init
 # Check if 2 parameters exist
-if [[ "x$1" = "x" || "x$2" = "x" ]]
+
+
+if [[ "x$1" = "x" ]]
 then
- echo "You need to specify a number a space and a size, e.g. 1 MB or 8 TB"
- echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB"
- exit
+     # No parameters provided
+     echo "You need to specify a number a space and a size, e.g. 1MB, 8TB, 1 MB or 8 TB"
+     echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB (this is case sensitive)"
+     exit
+elif [[ "x$2" = "x" ]]
+     then
+     # Only one parameter provided, need to determine if there is two parameters (e.g. 1MB is 1 MB)
+     param=$1
+     1="${param//[!0-9]/}" 
+     2="${param//[!a-z!A-Z]/}"
+     if [[ "x$2" = "x" ]]
+     then
+     # No second parameter provided
+     echo "You did not specify a size, e.g. 1MB, 8TB, 1 MB or 8 TB"
+     echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB (this is case sensitive)"
+     exit
+     fi
 fi
 
 nm=$1
@@ -92,7 +108,7 @@ case $ds in
       call_convert $nm 'Tb-B';;
   TB) l_abel='TeraBytes';
       call_convert $nm 'TB-B';;
-  *) echo Incorrect values:Supported values are b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB ;
+  *) echo "Incorrect values:Supported values are b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB (this is case sensitive)" ;
      exit;;
 esac
 

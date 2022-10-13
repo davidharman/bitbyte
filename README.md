@@ -7,13 +7,15 @@ I wanted:
 
 To install: place script in bin folder and chmod +x to make it executable
 
-To run enter a value and datasize separated by a space  
+To run enter a value and datasize (with or without a space to separate)
 
-<i>bitbyte value datasize </i>
+<i>bitbyte 'value''datasize'</i>
+OR
+<i>bitbyte 'value' 'datasize' </i>
   
   
 Example:  
-  $> bitbyte 1024 MB  
+  $> bitbyte 1024MB  
   Input  value 1024 MegaBytes  
   
   Bytes:1073741824  
