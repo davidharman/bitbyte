@@ -1,5 +1,5 @@
 # bitbyte
-A simple bash tool to convert quickly from different data sites
+A simple bash tool to convert quickly from different data sizes
 
 I wanted:
 - To quickly convert a data size to another size without using a browser every time or working it out in my head
