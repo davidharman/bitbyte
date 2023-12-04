@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+# bitbyte
+AlarmVersion=0.2
+# Author: David Harman
+# Date: 4th December 2023
+# Display a particular file size (e.g. 1MB) in every other combination (bytes/KB/MB/GB/TB)
+
 retval=""
 retval2=""
 
@@ -57,6 +63,7 @@ esac
 if [[ "x$1" = "x" ]]
 then
      # No parameters provided
+     echo "Command usage: bitbyte <value> <size>"
      echo "You need to specify a number a space and a size, e.g. 1MB, 8TB, 1 MB or 8 TB"
      echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB (this is case sensitive)"
      exit
@@ -69,6 +76,7 @@ elif [[ "x$2" = "x" ]]
      if [[ "x$2" = "x" ]]
      then
      # No second parameter provided
+     echo "Command usage: bitbyte <value> <size>"
      echo "You did not specify a size, e.g. 1MB, 8TB, 1 MB or 8 TB"
      echo "You can use, b,B,Kb,KB,KiB,Mb,MB,MiB,Gb,GB,GiB,Tb,TB (this is case sensitive)"
      exit
